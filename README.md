@@ -1,13 +1,13 @@
 # The Lounge Mobile Format
 
-A small The Lounge plugin that adds a touch-friendly IRC formatting toolbar to the mobile web client.
+A touch-friendly IRC formatting toolbar for [The Lounge](https://thelounge.chat/) mobile web client.
 
-It gives mobile users quick access to common IRC control codes without needing a hardware keyboard or memorising formatting shortcuts.
+It adds a compact **T** button inside the message input so mobile users can apply IRC formatting without memorising control codes or using a hardware keyboard.
 
 ## Features
 
-- Floating **text formatting** button inside the message input
-- Touch-friendly toolbar for:
+- Input-corner **text formatting** button designed for mobile/touch use
+- Toolbar for:
   - **Bold**
   - *Italic*
   - Underline
@@ -21,30 +21,113 @@ It gives mobile users quick access to common IRC control codes without needing a
 - Keeps The Lounge's native scroll-to-bottom button usable on mobile
 - No runtime dependencies
 
-## Screenshots
-
-Screenshots are not included yet. Add mobile screenshots here once the GitHub repo is ready.
-
-```md
-![Mobile formatting toolbar](docs/screenshot-toolbar.png)
-![Colour palette](docs/screenshot-colours.png)
-```
-
 ## Installation
 
-From your The Lounge config directory, install the package:
+The Lounge plugins are installed into the The Lounge data/config directory. Where that lives depends on how you self-host The Lounge.
+
+### 1. Standard npm install
+
+If The Lounge is installed normally on the host:
 
 ```bash
 thelounge install thelounge-plugin-mobile-format
+thelounge restart
+```
+
+If your service is managed by systemd, restart it instead:
+
+```bash
+sudo systemctl restart thelounge
+```
+
+### 2. Docker / Docker Compose with a mounted data directory
+
+Most Docker installs mount the The Lounge data directory, commonly something like:
+
+```yaml
+volumes:
+  - /path/on/host/thelounge:/var/opt/thelounge
+```
+
+Install the plugin from inside the running container:
+
+```bash
+docker exec -it thelounge thelounge install thelounge-plugin-mobile-format
+docker restart thelounge
+```
+
+If your container has a different name, replace `thelounge` with your container name:
+
+```bash
+docker ps
+```
+
+With Docker Compose:
+
+```bash
+docker compose exec thelounge thelounge install thelounge-plugin-mobile-format
+docker compose restart thelounge
+```
+
+### 3. Docker install from a local checkout
+
+Useful when testing changes before publishing to npm.
+
+If your local checkout is mounted into the container:
+
+```bash
+docker compose exec thelounge thelounge install /path/inside/container/thelounge-plugin-mobile-format
+docker compose restart thelounge
+```
+
+Or install into the host-mounted packages directory manually:
+
+```bash
+cd /path/on/host/thelounge/packages
+npm install /path/on/host/thelounge-plugin-mobile-format
+docker restart thelounge
+```
+
+### 4. Install directly from GitHub
+
+Once the repository is public, you can install from GitHub instead of npm:
+
+```bash
+thelounge install github:binkiewka/thelounge-plugin-mobile-format
+```
+
+or with npm syntax from the The Lounge packages directory:
+
+```bash
+cd /path/to/thelounge/packages
+npm install github:binkiewka/thelounge-plugin-mobile-format
+```
+
+Docker example:
+
+```bash
+docker exec -it thelounge thelounge install github:binkiewka/thelounge-plugin-mobile-format
+docker restart thelounge
+```
+
+If your GitHub username/org differs, replace `binkiewka` with the actual owner.
+
+### 5. Manual install into The Lounge packages directory
+
+If `thelounge install` is not available in your setup:
+
+```bash
+cd /path/to/thelounge/packages
+npm install thelounge-plugin-mobile-format
 ```
 
 Then restart The Lounge.
 
-If you are installing from a local checkout while developing:
+Common package locations:
 
-```bash
-thelounge install /path/to/thelounge-plugin-mobile-format
-```
+- Bare-metal Linux: `~/.thelounge/packages`
+- Docker official image with mounted data: `/var/opt/thelounge/packages` inside the container
+- Host bind mount: whatever host path you mounted to `/var/opt/thelounge`
 
 ## Usage
 
@@ -89,35 +172,38 @@ The inserted formatting codes are standard IRC control characters, so messages r
 Clone the repo, edit the files, then install the local package into your The Lounge instance:
 
 ```bash
-thelounge install /path/to/thelounge-plugin-mobile-format
-```
-
-Useful checks:
-
-```bash
+git clone https://github.com/binkiewka/thelounge-plugin-mobile-format.git
+cd thelounge-plugin-mobile-format
 npm test
 npm pack --dry-run
 ```
 
-## Publishing checklist
+Local install:
 
-Before publishing to npm:
+```bash
+thelounge install /path/to/thelounge-plugin-mobile-format
+```
 
-1. Update `version` in `package.json`.
-2. Add the GitHub `repository`, `bugs`, and `homepage` URLs once the repo exists.
-3. Run:
+Docker local install example:
 
-   ```bash
-   npm test
-   npm pack --dry-run
-   ```
+```bash
+docker exec -it thelounge thelounge install /path/inside/container/thelounge-plugin-mobile-format
+docker restart thelounge
+```
 
-4. Publish:
+## Publishing to npm
 
-   ```bash
-   npm publish
-   ```
+```bash
+npm test
+npm pack --dry-run
+npm publish
+```
+
+Before publishing a new release, update:
+
+- `version` in `package.json`
+- `CHANGELOG.md`
 
 ## License
 
-MIT
+MIT © Tomasz Binkiewicz

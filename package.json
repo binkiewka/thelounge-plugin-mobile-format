@@ -21,7 +21,7 @@
   ],
   "dependencies": {},
   "license": "MIT",
-  "author": "Tom Binia",
+  "author": "Tomasz Binkiewicz",
   "files": [
     "index.js",
     "plugin.js",
@@ -36,5 +36,13 @@
   },
   "engines": {
     "node": ">=18"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/binkiewka/thelounge-plugin-mobile-format.git"
+  },
+  "bugs": {
+    "url": "https://github.com/binkiewka/thelounge-plugin-mobile-format/issues"
+  },
+  "homepage": "https://github.com/binkiewka/thelounge-plugin-mobile-format#readme"
 }
