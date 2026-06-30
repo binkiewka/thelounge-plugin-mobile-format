@@ -61,6 +61,26 @@
         }
     }
 
+    function syncToggleMetrics(referenceButton) {
+        if (!toggleBtn || !referenceButton) return;
+
+        const style = window.getComputedStyle(referenceButton);
+        const rect = referenceButton.getBoundingClientRect();
+        const width = Math.max(28, Math.round(rect.width || parseFloat(style.width) || 32));
+        const height = Math.max(28, Math.round(rect.height || parseFloat(style.height) || 32));
+
+        toggleBtn.style.width = width + 'px';
+        toggleBtn.style.height = height + 'px';
+        toggleBtn.style.padding = style.padding;
+        toggleBtn.style.marginTop = style.marginTop;
+        toggleBtn.style.marginBottom = style.marginBottom;
+        toggleBtn.style.borderRadius = style.borderRadius;
+        toggleBtn.style.alignSelf = 'center';
+        toggleBtn.style.fontSize = style.fontSize;
+        toggleBtn.style.background = style.background;
+        toggleBtn.style.color = style.color;
+    }
+
     function placeToggleInForm() {
         const form = document.getElementById('form');
         if (!form || !toggleBtn) return false;
@@ -68,6 +88,7 @@
         const upload = document.getElementById('upload-tooltip') || document.getElementById('upload');
         const submit = document.getElementById('submit-tooltip') || document.getElementById('submit');
         const anchor = upload?.closest('span') || upload || submit?.closest('span') || submit;
+        const referenceButton = upload || submit;
 
         if (anchor && anchor.parentElement === form) {
             if (toggleBtn.parentElement !== form || toggleBtn.nextElementSibling !== anchor) {
@@ -77,6 +98,7 @@
             form.appendChild(toggleBtn);
         }
 
+        syncToggleMetrics(referenceButton);
         return true;
     }
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3 - 2026-06-30
+
+- Match the formatting toggle metrics to The Lounge action buttons to avoid low/misaligned icons in themed composers.
+
 ## 1.0.2 - 2026-06-30
 
 - Integrate the formatting toggle into The Lounge composer button row instead of overlaying it.

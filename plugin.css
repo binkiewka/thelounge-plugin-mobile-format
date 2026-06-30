@@ -1,4 +1,12 @@
 /* Mobile Format plugin: toolbar button + popup only. No textarea overlays. */
+#form #upload,
+#form #submit,
+#form #upload-tooltip,
+#form #submit-tooltip,
+#form .mfp-toggle {
+    align-self: center !important;
+}
+
 #form .mfp-toggle {
     position: static;
     z-index: auto;
@@ -14,11 +22,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: flex-end;
+    align-self: center;
+    box-sizing: border-box;
     cursor: pointer;
     font: inherit;
     font-size: 18px;
     line-height: 1;
+    margin: 0;
     transition: color 0.15s, opacity 0.15s, transform 0.15s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
@@ -179,11 +189,6 @@
 }
 
 @media (pointer: coarse), (max-width: 680px) {
-    #form .mfp-toggle {
-        width: 32px;
-        height: 32px;
-    }
-
     .mfp-btn {
         min-width: 40px;
         height: 40px;
