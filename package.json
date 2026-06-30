@@ -1,0 +1,40 @@
+{
+  "name": "thelounge-plugin-mobile-format",
+  "version": "1.0.0",
+  "description": "Touch-friendly IRC formatting toolbar for The Lounge mobile web client.",
+  "main": "index.js",
+  "thelounge": {
+    "name": "Mobile Formatting",
+    "type": "plugin",
+    "supports": ">=4.0.0"
+  },
+  "keywords": [
+    "thelounge",
+    "thelounge-plugin",
+    "irc",
+    "formatting",
+    "mobile",
+    "touch",
+    "toolbar",
+    "color",
+    "colour"
+  ],
+  "dependencies": {},
+  "license": "MIT",
+  "author": "Tom Binia",
+  "files": [
+    "index.js",
+    "plugin.js",
+    "plugin.css",
+    "README.md",
+    "LICENSE",
+    "CHANGELOG.md"
+  ],
+  "scripts": {
+    "test": "node --check index.js && node --check plugin.js",
+    "prepack": "npm test"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

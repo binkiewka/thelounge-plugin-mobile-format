@@ -1,0 +1,230 @@
+/* Mobile Format plugin: floating toggle + popup only. No textarea overlays. */
+#form #input,
+#form .input {
+    padding-right: 48px !important;
+}
+
+#form #submit,
+#form #submit-tooltip {
+    align-self: center !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+}
+
+#form #submit {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-height: 38px !important;
+    height: 38px !important;
+    line-height: 1 !important;
+}
+
+.mfp-toggle {
+    position: fixed;
+    z-index: 9000;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.14));
+    border-radius: 999px;
+    background: var(--background-light-color, #0c0c10);
+    color: var(--body-color-muted, #808090);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background-color 0.15s, opacity 0.15s, transform 0.15s;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.mfp-toggle[hidden] {
+    display: none !important;
+}
+
+.mfp-toggle:hover,
+.mfp-toggle:focus-visible,
+.mfp-toggle.is-active {
+    color: var(--link-color, #00f2ff);
+    border-color: var(--link-color, #00f2ff);
+    background: #111119;
+}
+
+.mfp-toggle.is-active {
+    box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.16), 0 8px 22px rgba(0, 0, 0, 0.55);
+}
+
+.mfp-toggle:active {
+    transform: scale(0.96);
+}
+
+/* Keep The Lounge's native jump-to-bottom button above the plugin T button. */
+#chat .scroll-down.scroll-down-shown {
+    z-index: 9002;
+    transform: translateY(-42px);
+}
+
+.mfp-popup {
+    position: fixed;
+    z-index: 9001;
+    width: max-content;
+    max-width: calc(100vw - 16px);
+    padding: 6px;
+    border: 1px solid var(--border-color, #1a1a24);
+    border-radius: 10px;
+    background-color: #0c0c10;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.78);
+    animation: mfp-in 0.11s ease-out;
+    -webkit-tap-highlight-color: transparent;
+}
+
+@keyframes mfp-in {
+    from { opacity: 0; transform: translateY(4px) scale(0.98); }
+    to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.mfp-main {
+    display: flex;
+    gap: 4px;
+    align-items: center;
+    width: max-content;
+    max-width: calc(100vw - 28px);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.mfp-main[hidden],
+.mfp-colors[hidden] {
+    display: none !important;
+}
+
+.mfp-main::-webkit-scrollbar {
+    display: none;
+}
+
+.mfp-btn,
+.mfp-back {
+    border: 1px solid var(--border-color, #1a1a24);
+    border-radius: 6px;
+    background: #14141c;
+    color: var(--body-color, #e2e2e9);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+    touch-action: manipulation;
+    user-select: none;
+}
+
+.mfp-btn {
+    flex: 0 0 auto;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 8px;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.mfp-btn:hover,
+.mfp-back:hover,
+.mfp-back:focus-visible {
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(0, 242, 255, 0.55);
+    color: #fff;
+}
+
+.mfp-btn:focus-visible {
+    outline: 2px solid rgba(0, 242, 255, 0.55);
+    outline-offset: 2px;
+}
+
+.mfp-btn.is-active,
+.mfp-btn.is-color-open {
+    background: rgba(168, 85, 247, 0.18);
+    border-color: var(--link-color, #00f2ff);
+    color: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0, 242, 255, 0.35), 0 0 10px rgba(0, 242, 255, 0.12);
+}
+
+.mfp-btn:active,
+.mfp-back:active {
+    transform: scale(0.95);
+}
+
+.mfp-colors {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-top: 4px;
+    padding-top: 4px;
+    border-top: 1px solid var(--border-color, #1a1a24);
+}
+
+.mfp-color-grid {
+    display: grid;
+    grid-template-columns: repeat(8, 28px);
+    gap: 4px;
+    width: max-content;
+}
+
+.mfp-swatch {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.1s, border-color 0.1s;
+    touch-action: manipulation;
+}
+
+.mfp-swatch-light {
+    box-shadow: inset 0 0 0 1px #777;
+}
+
+.mfp-swatch:hover,
+.mfp-swatch:focus-visible {
+    transform: scale(1.12);
+    border-color: #fff;
+}
+
+.mfp-swatch:active {
+    transform: scale(0.92);
+}
+
+.mfp-back {
+    width: 100%;
+    height: 28px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+@media (pointer: coarse), (max-width: 680px) {
+    .mfp-toggle {
+        width: 34px;
+        height: 34px;
+    }
+
+    .mfp-btn {
+        min-width: 40px;
+        height: 40px;
+        padding: 0 10px;
+    }
+
+    .mfp-color-grid {
+        grid-template-columns: repeat(8, 34px);
+        gap: 5px;
+    }
+
+    .mfp-swatch {
+        width: 34px;
+        height: 34px;
+    }
+}
