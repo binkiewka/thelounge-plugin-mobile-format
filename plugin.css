@@ -1,27 +1,10 @@
 /* Mobile Format plugin: floating toggle + popup only. No textarea overlays. */
-#form #input,
-#form .input {
-    padding-right: 48px !important;
-}
-
-#form #submit,
-#form #submit-tooltip {
-    align-self: center !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
-}
-
-#form #submit {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    min-height: 38px !important;
-    height: 38px !important;
-    line-height: 1 !important;
+#form {
+    position: relative;
 }
 
 .mfp-toggle {
-    position: fixed;
+    position: absolute;
     z-index: 9000;
     width: 30px;
     height: 30px;
@@ -59,12 +42,6 @@
 
 .mfp-toggle:active {
     transform: scale(0.96);
-}
-
-/* Keep The Lounge's native jump-to-bottom button above the plugin T button. */
-#chat .scroll-down.scroll-down-shown {
-    z-index: 9002;
-    transform: translateY(-42px);
 }
 
 .mfp-popup {

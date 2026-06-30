@@ -6,7 +6,7 @@
     const POPUP_ID = 'mfp-popup';
     const REPOSITION_EVENTS = ['resize', 'scroll', 'orientationchange', 'focusin', 'input'];
     const EDGE_GAP = 8;
-
+    const FORM_EDGE_GAP = 8;
 
     let toggleBtn = null;
     let popupEl = null;
@@ -357,29 +357,55 @@
 
         toggleBtn.hidden = false;
 
-        const inputRect = input.getBoundingClientRect();
-        const buttonWidth = toggleBtn.offsetWidth || 36;
-        const buttonHeight = toggleBtn.offsetHeight || 36;
-        const viewportWidth = window.innerWidth;
-        const viewportHeight = window.innerHeight;
+        if (toggleBtn.parentElement !== form) {
+            form.appendChild(toggleBtn);
+        }
 
-        // Park the formatting toggle in the input's top-right corner instead of
-        // floating above the composer. Keep it clamped for narrow/mobile views.
-        const left = Math.max(EDGE_GAP, Math.min(inputRect.right - buttonWidth - 4, viewportWidth - buttonWidth - EDGE_GAP));
-        const top = Math.max(EDGE_GAP, Math.min(inputRect.top + 4, viewportHeight - buttonHeight - EDGE_GAP));
+        const formRect = form.getBoundingClientRect();
+        const inputRect = input.getBoundingClientRect();
+        const uploadRect = document.getElementById('upload')?.getBoundingClientRect();
+        const submitRect = document.getElementById('submit')?.getBoundingClientRect();
+        const buttonWidth = toggleBtn.offsetWidth || 34;
+        const buttonHeight = toggleBtn.offsetHeight || 34;
+        const viewportWidth = window.visualViewport?.width || window.innerWidth;
+        const viewportHeight = window.visualViewport?.height || window.innerHeight;
+        const viewportLeft = window.visualViewport?.offsetLeft || 0;
+        const viewportTop = window.visualViewport?.offsetTop || 0;
+        const inputMidY = inputRect.top + (inputRect.height / 2);
+
+        // Do not change The Lounge's input sizing. Overlay the toggle in the
+        // natural action-button cluster, between upload and send when possible.
+        const candidateCenters = [uploadRect, submitRect]
+            .filter(Boolean)
+            .map((rect) => rect.left + (rect.width / 2));
+        let pageLeft;
+
+        if (candidateCenters.length >= 2) {
+            pageLeft = ((Math.min(...candidateCenters) + Math.max(...candidateCenters)) / 2) - (buttonWidth / 2);
+        } else if (candidateCenters.length === 1) {
+            pageLeft = candidateCenters[0] - buttonWidth - 10;
+        } else {
+            pageLeft = inputRect.right - buttonWidth - 6;
+        }
+
+        const pageTop = inputMidY - (buttonHeight / 2);
+        const left = Math.max(FORM_EDGE_GAP, Math.min(pageLeft - formRect.left, formRect.width - buttonWidth - FORM_EDGE_GAP));
+        const top = Math.max(FORM_EDGE_GAP, Math.min(pageTop - formRect.top, formRect.height - buttonHeight - FORM_EDGE_GAP));
 
         toggleBtn.style.left = left + 'px';
         toggleBtn.style.top = top + 'px';
 
         if (!popupEl) return;
 
+        const toggleRect = toggleBtn.getBoundingClientRect();
         const popupWidth = popupEl.offsetWidth || 280;
         const popupHeight = popupEl.offsetHeight || 50;
-        let popupLeft = left + (buttonWidth / 2) - (popupWidth / 2);
-        let popupTop = top - popupHeight - 8;
+        let popupLeft = toggleRect.left + (buttonWidth / 2) - (popupWidth / 2);
+        let popupTop = toggleRect.top - popupHeight - 8;
 
-        if (popupTop < 8) popupTop = top + buttonHeight + 8;
-        popupLeft = Math.max(8, Math.min(popupLeft, viewportWidth - popupWidth - 8));
+        if (popupTop < viewportTop + EDGE_GAP) popupTop = toggleRect.bottom + 8;
+        popupLeft = Math.max(viewportLeft + EDGE_GAP, Math.min(popupLeft, viewportLeft + viewportWidth - popupWidth - EDGE_GAP));
+        popupTop = Math.max(viewportTop + EDGE_GAP, Math.min(popupTop, viewportTop + viewportHeight - popupHeight - EDGE_GAP));
 
         popupEl.style.left = popupLeft + 'px';
         popupEl.style.top = popupTop + 'px';
@@ -405,7 +431,7 @@
             toggleBtn.setAttribute('aria-label', 'Text formatting');
             toggleBtn.setAttribute('aria-pressed', 'false');
             toggleBtn.innerHTML = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>';
-            document.body.appendChild(toggleBtn);
+            (document.getElementById('form') || document.body).appendChild(toggleBtn);
 
             onPress(toggleBtn, () => {
                 if (popupEl) closePopup();
