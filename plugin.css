@@ -1,46 +1,41 @@
-/* Mobile Format plugin: floating toggle + popup only. No textarea overlays. */
-#form {
-    position: relative;
-}
-
-.mfp-toggle {
-    position: absolute;
-    z-index: 9000;
-    width: 30px;
-    height: 30px;
+/* Mobile Format plugin: toolbar button + popup only. No textarea overlays. */
+#form .mfp-toggle {
+    position: static;
+    z-index: auto;
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
     padding: 0;
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.14));
-    border-radius: 999px;
-    background: var(--background-light-color, #0c0c10);
-    color: var(--body-color-muted, #808090);
-    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #607992;
+    box-shadow: none;
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    align-self: flex-end;
     cursor: pointer;
-    transition: color 0.15s, border-color 0.15s, background-color 0.15s, opacity 0.15s, transform 0.15s;
+    font: inherit;
+    font-size: 18px;
+    line-height: 1;
+    transition: color 0.15s, opacity 0.15s, transform 0.15s;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
     user-select: none;
 }
 
-.mfp-toggle[hidden] {
+#form .mfp-toggle[hidden] {
     display: none !important;
 }
 
-.mfp-toggle:hover,
-.mfp-toggle:focus-visible,
-.mfp-toggle.is-active {
+#form .mfp-toggle:hover,
+#form .mfp-toggle:focus-visible,
+#form .mfp-toggle.is-active {
     color: var(--link-color, #00f2ff);
-    border-color: var(--link-color, #00f2ff);
-    background: #111119;
 }
 
-.mfp-toggle.is-active {
-    box-shadow: 0 0 0 2px rgba(0, 242, 255, 0.16), 0 8px 22px rgba(0, 0, 0, 0.55);
-}
-
-.mfp-toggle:active {
+#form .mfp-toggle:active {
     transform: scale(0.96);
 }
 
@@ -184,9 +179,9 @@
 }
 
 @media (pointer: coarse), (max-width: 680px) {
-    .mfp-toggle {
-        width: 34px;
-        height: 34px;
+    #form .mfp-toggle {
+        width: 32px;
+        height: 32px;
     }
 
     .mfp-btn {
