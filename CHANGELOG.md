@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.4 - 2026-07-01
+
+- Fix iOS keyboard popup positioning by compensating for visual viewport offsets.
+- Reposition the popup after the keyboard viewport settles to keep it aligned above the composer.
+
 ## 1.0.3 - 2026-06-30
 
 - Match the formatting toggle metrics to The Lounge action buttons to avoid low/misaligned icons in themed composers.
