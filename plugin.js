@@ -6,6 +6,7 @@
     const POPUP_ID = 'mfp-popup';
     const REPOSITION_EVENTS = ['resize', 'scroll', 'orientationchange', 'focusin', 'input'];
     const EDGE_GAP = 8;
+    const KEYBOARD_SETTLE_DELAYS = [60, 180, 360];
 
     let toggleBtn = null;
     let popupEl = null;
@@ -381,7 +382,31 @@
         popupEl = popup;
 
         updateActiveButtons();
-        schedulePosition();
+        schedulePosition({ settle: true });
+    }
+
+    function viewportMetrics() {
+        const viewport = window.visualViewport;
+
+        return {
+            width: viewport?.width || window.innerWidth,
+            height: viewport?.height || window.innerHeight,
+            left: viewport?.offsetLeft || 0,
+            top: viewport?.offsetTop || 0
+        };
+    }
+
+    function fixedFromVisual(left, top) {
+        const viewport = viewportMetrics();
+
+        // iOS Safari reports element rects in visual-viewport coordinates while
+        // position: fixed is still applied in layout-viewport coordinates when
+        // the keyboard is open. Add the visual viewport offset so the popup
+        // doesn't jump too high above the input bar.
+        return {
+            left: left + viewport.left,
+            top: top + viewport.top
+        };
     }
 
     function positionFloatingUi() {
@@ -402,27 +427,35 @@
         if (!popupEl) return;
 
         const toggleRect = toggleBtn.getBoundingClientRect();
+        const formRect = form.getBoundingClientRect();
         const buttonWidth = toggleBtn.offsetWidth || 32;
-        const viewportWidth = window.visualViewport?.width || window.innerWidth;
-        const viewportHeight = window.visualViewport?.height || window.innerHeight;
-        const viewportLeft = window.visualViewport?.offsetLeft || 0;
-        const viewportTop = window.visualViewport?.offsetTop || 0;
+        const viewport = viewportMetrics();
         const popupWidth = popupEl.offsetWidth || 280;
         const popupHeight = popupEl.offsetHeight || 50;
+        const anchorTop = Math.min(toggleRect.top, formRect.top || toggleRect.top);
+        const anchorBottom = Math.max(toggleRect.bottom, formRect.bottom || toggleRect.bottom);
         let popupLeft = toggleRect.left + (buttonWidth / 2) - (popupWidth / 2);
-        let popupTop = toggleRect.top - popupHeight - 8;
+        let popupTop = anchorTop - popupHeight - 8;
 
-        if (popupTop < viewportTop + EDGE_GAP) popupTop = toggleRect.bottom + 8;
-        popupLeft = Math.max(viewportLeft + EDGE_GAP, Math.min(popupLeft, viewportLeft + viewportWidth - popupWidth - EDGE_GAP));
-        popupTop = Math.max(viewportTop + EDGE_GAP, Math.min(popupTop, viewportTop + viewportHeight - popupHeight - EDGE_GAP));
+        if (popupTop < EDGE_GAP) popupTop = anchorBottom + 8;
+        popupLeft = Math.max(EDGE_GAP, Math.min(popupLeft, viewport.width - popupWidth - EDGE_GAP));
+        popupTop = Math.max(EDGE_GAP, Math.min(popupTop, viewport.height - popupHeight - EDGE_GAP));
 
-        popupEl.style.left = popupLeft + 'px';
-        popupEl.style.top = popupTop + 'px';
+        const fixedPosition = fixedFromVisual(popupLeft, popupTop);
+        popupEl.style.left = fixedPosition.left + 'px';
+        popupEl.style.top = fixedPosition.top + 'px';
     }
 
-    function schedulePosition() {
-        if (raf) return;
-        raf = window.requestAnimationFrame(positionFloatingUi);
+    function schedulePosition(options = {}) {
+        if (!raf) raf = window.requestAnimationFrame(positionFloatingUi);
+
+        if (options.settle) {
+            KEYBOARD_SETTLE_DELAYS.forEach((delay) => {
+                window.setTimeout(() => {
+                    if (popupEl || toggleBtn) schedulePosition();
+                }, delay);
+            });
+        }
     }
 
     function ensureToggle() {
@@ -445,7 +478,7 @@
             onPress(toggleBtn, () => {
                 if (popupEl) closePopup();
                 else openPopup();
-                schedulePosition();
+                schedulePosition({ settle: true });
             });
         }
 
