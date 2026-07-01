@@ -1,12 +1,4 @@
 /* Mobile Format plugin: toolbar button + popup only. No textarea overlays. */
-#form #upload,
-#form #submit,
-#form #upload-tooltip,
-#form #submit-tooltip,
-#form .mfp-toggle {
-    align-self: center !important;
-}
-
 #form .mfp-toggle {
     position: static;
     z-index: auto;
@@ -22,7 +14,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    align-self: center;
+    align-self: flex-end;
     box-sizing: border-box;
     cursor: pointer;
     font: inherit;

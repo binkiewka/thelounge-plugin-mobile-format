@@ -76,7 +76,7 @@
         toggleBtn.style.marginTop = style.marginTop;
         toggleBtn.style.marginBottom = style.marginBottom;
         toggleBtn.style.borderRadius = style.borderRadius;
-        toggleBtn.style.alignSelf = 'center';
+        toggleBtn.style.alignSelf = 'flex-end';
         toggleBtn.style.fontSize = style.fontSize;
         toggleBtn.style.background = style.background;
         toggleBtn.style.color = style.color;

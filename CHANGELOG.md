@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.0.5 - 2026-07-01
+
+- Keep composer action icons bottom-aligned as multiline input grows.
+- Stop forcing The Lounge upload and submit buttons to vertically center inside the composer.
+
 ## 1.0.4 - 2026-07-01
 
 - Fix iOS keyboard popup positioning by compensating for visual viewport offsets.
