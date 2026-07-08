@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.6 - 2026-07-08
+
+- Fix script injection in newer versions of The Lounge (e.g., v4.5.2-rc.1) by patching `fs.readFileSync` in addition to `fs.readFile` and intercepting `public/index.html` loads.
+
 ## 1.0.5 - 2026-07-01
 
 - Keep composer action icons bottom-aligned as multiline input grows.
